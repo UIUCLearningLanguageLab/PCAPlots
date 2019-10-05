@@ -6,3 +6,4 @@ A collection of useful plotting functions previously used to analyze word embedd
 
 * show example plots
 * add example dummy data
+* make plotting skip-gram neighbors work
