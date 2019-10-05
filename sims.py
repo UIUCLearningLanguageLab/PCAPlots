@@ -26,3 +26,42 @@
         plt.tight_layout()
         print('{} completed in {:.1f} secs'.format(sys._getframe().f_code.co_name, time.time() - start))
         return fig
+
+    def make_compare_term_simmats_fig(num_most_frequent=10,
+                                      dists=(-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7)):
+        """
+        Returns fig showing similarity between a computed similarity space and that of the model
+        """
+        start = time.time()
+
+        most_frequent_terms = model.hub.get_most_frequent_terms(num_most_frequent)
+        # load data
+        y = []
+        for dist in dists:
+            term_context_mat = np.zeros((model.hub.train_terms.num_types, num_most_frequent))
+            for n, term in enumerate(model.hub.train_terms.types):
+                terms_near_term = model.hub.get_terms_near_term(term, dist)
+                context_vec = [terms_near_term.count(term) for term in most_frequent_terms]
+                term_context_mat[n] = context_vec
+            term_context_simmat = cosine_similarity(term_context_mat)
+            # calc fit
+            fit = paired_cosine_distances(term_context_simmat, model.term_simmat).mean()
+            y.append(fit)
+        x = np.asarray(dists)
+        # fig
+        fig, ax = plt.subplots(figsize=(FigsConfigs.MAX_FIG_WIDTH, 3), dpi=FigsConfigs.DPI)
+        plt.title('Terms')
+        ax.set_ylabel('Fit', fontsize=FigsConfigs.AXLABEL_FONT_SIZE)
+        ax.set_xlabel('Context Distance', fontsize=FigsConfigs.AXLABEL_FONT_SIZE)
+        ax.spines['right'].set_visible(False)
+        ax.spines['top'].set_visible(False)
+        ax.tick_params(axis='both', which='both', top='off', right='off')
+        ax.axhline(y=0, color='grey', zorder=0)
+        ax.set_xticks(dists)
+        ax.set_xticklabels(dists)
+        # plot
+        width = 0.3
+        ax.bar(x, y, width, color='black')
+        plt.tight_layout()
+        print('{} completed in {:.1f} secs'.format(sys._getframe().f_code.co_name, time.time() - start))
+        return fig
