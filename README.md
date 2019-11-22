@@ -11,6 +11,7 @@ in matplotlib, yticklabels by default start from top rather than origin (which i
 but when using dendrograms, one needs to set the extent of the main axis, which then somehow reverses this behavior, such that
 yticklabels start from the origin - this means they need to be reversed to label the rows of the matrix correctly
 
+
 ## TODO
 
 * show example plots
@@ -18,7 +19,16 @@ yticklabels start from the origin - this means they need to be reversed to label
 * make plotting skip-gram neighbors work
 
 
-## Embedding matplotlib figures in a html page (e.g. served by flask)
+## Tips & Tricks
+
+### Fontsize
+
+```python
+plt.setp(ax.get_yticklabels(), fontsize=config.Fig.ax_fontsize)
+plt.setp(ax.get_xticklabels(), fontsize=config.Fig.ax_fontsize)
+ ```
+
+### Embedding matplotlib figures in a html page (e.g. served by flask)
 
 Use the following function to convert matplotlib figure objects to a format readadble by the browser:
 
