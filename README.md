@@ -2,6 +2,15 @@
 
 A collection of useful plotting functions previously used to analyze word embeddings of neural networks
 
+## Figures
+
+### Dendrogram-Heatmap
+
+y axis labels for dendrogram heatmap:
+in matplotlib, yticklabels by default start from top rather than origin (which is intuitive and labels rows of a matrix correctly)
+but when using dendrograms, one needs to set the extent of the main axis, which then somehow reverses this behavior, such that
+yticklabels start from the origin - this means they need to be reversed to label the rows of the matrix correctly
+
 ## TODO
 
 * show example plots
