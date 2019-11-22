@@ -26,10 +26,13 @@ yticklabels start from the origin - this means they need to be reversed to label
 ```python
 plt.setp(ax.get_yticklabels(), fontsize=config.Fig.ax_fontsize)
 plt.setp(ax.get_xticklabels(), fontsize=config.Fig.ax_fontsize)
+```
 
 ### Tick Label Format
 
 ```python
+from matplotlib.ticker import FormatStrFormatter
+
 ax.yaxis.set_major_formatter(FormatStrFormatter('%.1f'))
 ```
 
