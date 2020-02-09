@@ -4,6 +4,9 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib import patheffects
 from math import gcd
+from typing import List
+import string
+import random
 
 from src import config
 
@@ -18,23 +21,25 @@ def equidistant_elements(l, n):
     return res
 
 
-def make_cat_acts_2d_walk_fig(embeddings: np.ndarray,
-                              component1: int,
-                              component2: int,
-                              num_ticks: int,
-                              ) -> plt.Figure:
+def make_pca_across_time_fig(embeddings: np.ndarray,
+                             words: List[str],
+                             component1: int,
+                             component2: int,
+                             num_ticks: int,
+                             ) -> plt.Figure:
     """
     Returns fig showing evolution of embeddings in 2D space using PCA.
     """
 
     assert np.ndim(embeddings) == 3  # (ticks, words, embedding dimensions)
+    assert len(words) == embeddings.shape[1]
 
     palette = np.array(sns.color_palette("hls", embeddings.shape[1]))
     model_ticks = [n for n, _ in enumerate(embeddings)]
     equidistant_ticks = equidistant_elements(model_ticks, num_ticks)
 
     # fit pca model on last tick
-    num_components = component2
+    num_components = component2 + 1
     pca_model = PCA(n_components=num_components)
     pca_model.fit(embeddings[-1])
 
@@ -45,14 +50,7 @@ def make_cat_acts_2d_walk_fig(embeddings: np.ndarray,
 
     # fig
     fig, ax = plt.subplots(figsize=config.Fig.fig_size, dpi=config.Fig.dpi)
-    for cat_id, cat in enumerate(model.hub.probe_store.cats):
-        x, y = zip(*[acts_2d_mat[cat_id] for acts_2d_mat in transformations])
-        ax.plot(x, y, c=palette[cat_id], lw=config.Fig.LINEWIDTH)
-        xtext, ytext = transformations[-1][cat_id, :]
-        txt = ax.text(xtext, ytext, str(cat), fontsize=8,
-                      color=palette[cat_id])
-        txt.set_path_effects([
-            patheffects.Stroke(linewidth=config.Fig.LINEWIDTH, foreground="w"), patheffects.Normal()])
+    ax.set_title(f'Principal components {component1} and {component2}\nEvolution across training')
     ax.axis('off')
     x_max = np.max(np.dstack(transformations)[:, 0, :]) * 1.2
     y_max = np.max(np.dstack(transformations)[:, 1, :]) * 1.2
@@ -60,7 +58,34 @@ def make_cat_acts_2d_walk_fig(embeddings: np.ndarray,
     ax.set_ylim([-y_max, y_max])
     ax.axhline(y=0, linestyle='--', c='grey', linewidth=1.0)
     ax.axvline(x=0, linestyle='--', c='grey', linewidth=1.0)
-    ax.set_title(f'Principal components {component1} and {component2}\nEvolution across training')
+
+    # plot
+    for n, word in enumerate(words):
+
+        # scatter
+        x, y = zip(*[t[n] for t in transformations])
+        ax.plot(x, y, c=palette[n], lw=config.Fig.LINEWIDTH)
+
+        # text
+        x_pos, y_pos = transformations[-1][n, :]
+        txt = ax.text(x_pos, y_pos, str(word), fontsize=8,
+                      color=palette[n])
+        txt.set_path_effects([
+            patheffects.Stroke(linewidth=config.Fig.LINEWIDTH, foreground="w"), patheffects.Normal()])
+
     fig.tight_layout()
 
     return fig
+
+
+NUM_TICKS = 12
+NUM_WORDS = 4
+EMBED_SIZE = 8
+
+# create random words and random embeddings
+words = [f'word-{random.choice(string.ascii_letters)}' for _ in range(NUM_WORDS)]
+embeddings = np.stack([np.random.random((NUM_WORDS, EMBED_SIZE)) * (NUM_TICKS / (tick + 1))
+                       for tick in range(NUM_TICKS)])
+
+fig = make_pca_across_time_fig(embeddings, words, component1=0, component2=1, num_ticks=6)
+fig.show()
