@@ -36,6 +36,12 @@ Shows a measure of categorization performance (e.g. balanced accuracy) for each 
 
 <img src="images/balanced_accuracy_by_cat.png" width="400">
 
+### Cosine Time Course
+
+Shows cosine similarity between a set of test and reference embeddings across training time.
+
+<img src="images/cosine_timecourse.png" width="400">
+
 ## Tips & Tricks
 
 ### Fontsize

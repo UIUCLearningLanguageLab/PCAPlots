@@ -46,7 +46,7 @@ def make_ba_breakdown_annotated_fig(word2ba: Dict[str, float],
         ax.set_xlim([-1, cats_per_axis])
         ax.spines['right'].set_visible(False)
         ax.spines['top'].set_visible(False)
-        ax.axhline(y=avg_ba, alpha=config.Fig.FILL_ALPHA, c='grey', linestyle='--', zorder=1)
+        ax.axhline(y=avg_ba, alpha=config.Fig.fill_alpha, c='grey', linestyle='--', zorder=1)
 
         # plot
         annotated_y_ints_long_words_prev_cat = []
