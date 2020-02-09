@@ -30,7 +30,7 @@ def make_pca_loadings_heatmap_fig(embeddings: np.ndarray,
     # do PCA
     pca_model = PCA(n_components=num_components)
     transformation = pca_model.fit_transform(embeddings)
-    explained_var_ratio = np.asarray(pca_model.explained_variance_ratio_) * 100
+    explained_var_percent = np.asarray(pca_model.explained_variance_ratio_) * 100
 
     # group loadings + average over all loadings in group
     avg_loadings = []
@@ -70,7 +70,7 @@ def make_pca_loadings_heatmap_fig(embeddings: np.ndarray,
     ax_heatmap.xaxis.set_ticks(np.linspace(halfxw, xlim - halfxw, config.Fig.NUM_PCS))
     if label_explained_var:
         ax_heatmap.xaxis.set_ticklabels(['PC {} ({:.1f} %)'.format(pc_id + 1, expl_var)
-                                         for pc_id, expl_var in zip(range(config.Fig.NUM_PCS), explained_var_ratio)])
+                                         for pc_id, expl_var in zip(range(config.Fig.NUM_PCS), explained_var_percent)])
     else:
         ax_heatmap.xaxis.set_ticklabels(['PC {}'.format(pc_id + 1)
                                          for pc_id in range(config.Fig.NUM_PCS)])

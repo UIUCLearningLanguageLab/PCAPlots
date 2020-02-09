@@ -4,10 +4,9 @@ class Fig:
     dpi = 163
     fig_size = (7, 7)  # inches
     ax_label_fontsize = 14  # todo 12
-    TICKLABEL_FONT_SIZE = 10
-    LEG_FONTSIZE = 10
-    LINEWIDTH = 2
-    MARKERSIZE = 10
+    tick_label_fontsize = 10
+    legend_fontsize = 10
+    line_width = 2
     FILL_ALPHA = 0.5
 
     # miscellaneous

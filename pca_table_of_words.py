@@ -34,7 +34,7 @@ def make_principal_comps_table_fig(embeddings: np.ndarray,
     num_components = component + 1
     pca_model = PCA(n_components=num_components)
     transformation = pca_model.fit_transform(embeddings)
-    explained_var_ratio = np.asarray(pca_model.explained_variance_ratio_) * 100
+    explained_var_percent = np.asarray(pca_model.explained_variance_ratio_) * 100
     pc = transformation[:, component]
 
     # sort and filter
@@ -56,7 +56,7 @@ def make_principal_comps_table_fig(embeddings: np.ndarray,
     # fig
     res, ax = plt.subplots(figsize=config.Fig.fig_size, dpi=config.Fig.dpi)
     ax.set_title('Principal Component {} ({:.2f}% var)'.format(
-        component, explained_var_ratio[component]), fontsize=config.Fig.ax_label_fontsize)
+        component, explained_var_percent[component]), fontsize=config.Fig.ax_label_fontsize)
     ax.axis('off')
 
     # plot table
@@ -88,7 +88,7 @@ def make_loadings_line_fig(embeddings: np.ndarray,
     ax.spines['top'].set_visible(False)
 
     # plot
-    ax.plot(sorted(pc), '-', linewidth=config.Fig.LINEWIDTH, color='black')
+    ax.plot(sorted(pc), '-', linewidth=config.Fig.line_width, color='black')
     ax.set_xticklabels([])
     ax.set_xlabel('Words', fontsize=config.Fig.ax_label_fontsize)
     ax.set_ylabel(f'Principal Component {component} Loading', fontsize=config.Fig.ax_label_fontsize)

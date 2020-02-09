@@ -36,7 +36,7 @@ def make_ba_breakdown_annotated_fig(context_type):
         ax.set_ylabel('Avg Probe Balanced Accuracy ({})'.format(context_type),
                       fontsize=config.Fig.ax_label_fontsize)
         ax.set_xticks(np.arange(cats_per_axis), minor=False)  # shifts xtick labels right
-        ax.set_xticklabels(cats_sorted_by_fs_truncated, minor=False, fontsize=config.Fig.TICKLABEL_FONT_SIZE,
+        ax.set_xticklabels(cats_sorted_by_fs_truncated, minor=False, fontsize=config.Fig.tick_label_fontsize,
                            rotation=90)
         ax.set_xlim([0, cats_per_axis])
         ax.spines['right'].set_visible(False)
@@ -167,7 +167,7 @@ def make_ba_by_cat_fig(context_type, sg_embed_size=512):
     plt.title('context_type="{}"'.format(context_type), fontsize=config.Fig.ax_label_fontsize)
     ax.set_ylabel('Balanced Accuracy (+/-SEM)', fontsize=config.Fig.ax_label_fontsize, labelpad=0.0)
     ax.set_xticks(np.arange(num_cats), minor=False)
-    ax.set_xticklabels(sorted_cats, minor=False, fontsize=config.Fig.TICKLABEL_FONT_SIZE, rotation=90)
+    ax.set_xticklabels(sorted_cats, minor=False, fontsize=config.Fig.tick_label_fontsize, rotation=90)
     ax.set_xlim([0, len(cats)])
     ax.set_ylim([0.5, 1.0])
     ax.set_axisbelow(True)  # put grid under plot lines
@@ -179,7 +179,7 @@ def make_ba_by_cat_fig(context_type, sg_embed_size=512):
     # plot
     for (x, y, sem, model_desc, num_models) in xys:
         color = next(palette)
-        ax.plot(x, y, '-', color=color, linewidth=config.Fig.LINEWIDTH,
+        ax.plot(x, y, '-', color=color, linewidth=config.Fig.line_width,
                 label='{} n={}'.format(model_desc, num_models))
         ax.fill_between(x, np.add(y, sem), np.subtract(y, sem), alpha=config.Fig.FILL_ALPHA, color='grey')
 
@@ -195,7 +195,7 @@ def make_ba_by_cat_fig(context_type, sg_embed_size=512):
         y = [cat_y_dict[cat] for cat in sorted_cats]
         sem = [cat_sem_dict[cat] for cat in sorted_cats]
         x = range(num_cats)
-        ax.plot(x, y, '-', color='black', linewidth=config.Fig.LINEWIDTH,
+        ax.plot(x, y, '-', color='black', linewidth=config.Fig.line_width,
                 label='skipgram num_h{} n={}'.format(sg_embed_size, num_sgs))
         ax.fill_between(x, np.add(y, sem), np.subtract(y, sem), alpha=config.Fig.FILL_ALPHA, color='grey')
         sg_avg_probe_bas = df_sg.filter(regex="avg_probe_ba_\d").mean(axis=0)

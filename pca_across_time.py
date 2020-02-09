@@ -60,14 +60,14 @@ def make_pca_across_time_fig(embeddings: np.ndarray,
 
         # scatter
         x, y = zip(*[t[n] for t in transformations])
-        ax.plot(x, y, c=palette[n], lw=config.Fig.LINEWIDTH)
+        ax.plot(x, y, c=palette[n], lw=config.Fig.line_width)
 
         # text
         x_pos, y_pos = transformations[-1][n, :]
         txt = ax.text(x_pos, y_pos, str(word), fontsize=8,
                       color=palette[n])
         txt.set_path_effects([
-            patheffects.Stroke(linewidth=config.Fig.LINEWIDTH, foreground="w"), patheffects.Normal()])
+            patheffects.Stroke(linewidth=config.Fig.line_width, foreground="w"), patheffects.Normal()])
 
     return res
 

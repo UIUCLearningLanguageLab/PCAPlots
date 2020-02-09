@@ -59,6 +59,6 @@ def make_probe_probe_corr_traj_fig(probes):
             # plot
             for alt_probe_id, alt_probe in enumerate(config.Fig.ALTERNATE_PROBES):
                 traj = probe_traj_mat_dict[probe][alt_probe_id]
-                ax.plot(x, traj, '-', linewidth=config.Fig.LINEWIDTH, label=alt_probe)
+                ax.plot(x, traj, '-', linewidth=config.Fig.line_width, label=alt_probe)
     fig.tight_layout()
     return fig
