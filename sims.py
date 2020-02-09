@@ -10,7 +10,7 @@
         probe_simmat[np.tril_indices(probe_simmat.shape[0], -1)] = np.nan
         probe_simmat_values = probe_simmat[~np.isnan(probe_simmat)]
         # fig
-        fig, ax = plt.subplots(figsize=(config.Fig.MAX_FIG_WIDTH, 3), dpi=config.Fig.DPI)
+        fig, ax = plt.subplots(figsize=(config.Fig.fig_size, 3), dpi=config.Fig.dpi)
         ax.set_xlabel('Similarity', fontsize=config.Fig.AXLABEL_FONT_SIZE)
         ax.set_ylabel('Frequency', fontsize=config.Fig.AXLABEL_FONT_SIZE)
         ax.spines['right'].set_visible(False)
@@ -49,7 +49,7 @@
             y.append(fit)
         x = np.asarray(dists)
         # fig
-        fig, ax = plt.subplots(figsize=(config.Fig.MAX_FIG_WIDTH, 3), dpi=config.Fig.DPI)
+        fig, ax = plt.subplots(figsize=(config.Fig.fig_size, 3), dpi=config.Fig.dpi)
         plt.title('Terms')
         ax.set_ylabel('Fit', fontsize=config.Fig.AXLABEL_FONT_SIZE)
         ax.set_xlabel('Context Distance', fontsize=config.Fig.AXLABEL_FONT_SIZE)
@@ -73,7 +73,7 @@
         start = time.time()
         # init term_simmat_mat
         if include_sg:
-            sg_types = list(np.load(os.path.join(GlobalConfigs.SG_DIR, 'sg_types.npy')).tolist())
+            sg_types = list(np.load(os.path.join(config.Fig.SG_DIR, 'sg_types.npy')).tolist())
             terms = list(set(model_groups[0][0].hub.train_terms.types) & set(sg_types))
             dim1 = model_groups[0][0].hub.probe_store.num_probes * len(terms)
         else:
@@ -100,12 +100,12 @@
         if include_sg:  # TODO fix
             sg_probe_term_ids = [sg_types.index(probe) for probe in model_groups[0][0].hub.probe_store.types]
             sg_term_term_ids = [sg_types.index(term) for term in terms]
-            sg_token_simmat_filenames = sorted([f for f in os.listdir(GlobalConfigs.SG_DIR)
+            sg_token_simmat_filenames = sorted([f for f in os.listdir(config.Fig.SG_DIR)
                                                 if f.startswith('sg_token_simmat')])
             num_sgs = len(sg_token_simmat_filenames)
             sg_term_simmats_mat = np.zeros((num_sgs, dim1))
             for model_id, f in enumerate(sg_token_simmat_filenames):
-                sg_probe_term_simmat = np.load(os.path.join(GlobalConfigs.SG_DIR, f))[sg_probe_term_ids, :]
+                sg_probe_term_simmat = np.load(os.path.join(config.Fig.SG_DIR, f))[sg_probe_term_ids, :]
                 flattened = sg_probe_term_simmat[:, sg_term_term_ids].flatten()
                 sg_term_simmats_mat[model_id, :] = flattened
             group_names += ['skip-gram'] * num_sgs
@@ -114,7 +114,7 @@
             term_simmat_mat = term_simmat_mat
         sim_simmat = pd.DataFrame(term_simmat_mat).T.corr().values
         # fig
-        fig, ax = plt.subplots(figsize=(config.Fig.MAX_FIG_WIDTH, config.Fig.MAX_FIG_WIDTH))
+        fig, ax = plt.subplots(figsize=(config.Fig.fig_size, config.Fig.fig_size))
         mask = np.zeros_like(sim_simmat, dtype=np.bool)
         mask[np.triu_indices_from(mask, 1)] = True
         sns.heatmap(sim_simmat, ax=ax, square=True, annot=False,

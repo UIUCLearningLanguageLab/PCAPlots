@@ -73,7 +73,7 @@ def plot_best_fit_line(ax, xys, fontsize, color='red', zorder=3, x_pos=0.05, y_p
 def get_neighbors_from_token_simmat(model, token_simmat, term, num_neighbors):
     token_id = model.train_terms.term_id_dict[term]
     neighbor_tuples = [(token, sim) for token, sim in zip(model.train_terms.types, token_simmat[token_id])]
-    neighbor_tuples_sorted = sorted(neighbor_tuples, key=itemgetter(1), reverse=True)[1:num_neighbors]
+    neighbor_tuples_sorted = sorted(neighbor_tuples, key=lambda i: i[1], reverse=True)[1:num_neighbors]
     neighbors = [tuple[0] for tuple in neighbor_tuples_sorted]
     return neighbors
 

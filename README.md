@@ -74,3 +74,7 @@ And put the following in your html template file:
 ```html
 <img src="data:image/png;base64,{{ img }}" class="custom-class" alt="Placeholder">
 ```
+
+## Compatibility
+
+Developed using Python 3.8 on Ubuntu 16.04

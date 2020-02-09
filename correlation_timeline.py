@@ -1,3 +1,9 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+from src import config
+
+
 def make_probe_probe_corr_traj_fig(probes):
     """
     Returns fig showing correlation between  probe prototype activation and activations of "alternate probes".
@@ -29,7 +35,7 @@ def make_probe_probe_corr_traj_fig(probes):
                 y_mins.append(y_min)
     x = model.get_data_step_axis()
     # fig
-    fig, axarr = plt.subplots(num_rows, 2, figsize=(config.Fig.MAX_FIG_WIDTH, 2 * num_rows), dpi=config.Fig.DPI)
+    fig, axarr = plt.subplots(num_rows, 2, figsize=(config.Fig.fig_size, 2 * num_rows), dpi=config.Fig.dpi)
     for row_id, row in enumerate(axarr):
         for ax_id, ax in enumerate(row):
             try:
