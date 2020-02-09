@@ -42,6 +42,12 @@ Shows cosine similarity between a set of test and reference embeddings across tr
 
 <img src="images/cosine_timecourse.png" width="400">
 
+### Nearest Neighbors
+
+Shows nearest neighbors of a set of test words in an embedding space.
+
+<img src="images/nearest_neighbors.png" width="400">
+
 ## Tips & Tricks
 
 ### Fontsize

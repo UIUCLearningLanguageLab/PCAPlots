@@ -1,100 +1,74 @@
+from typing import List
 import numpy as np
 import matplotlib.pyplot as plt
+from itertools import zip_longest
 
 from src import config
 
+plt.rcParams['font.family'] = 'monospace'  # each character in this font is equally wide
 
-def make_neighbors_table_fig(terms):
+
+def make_neighbors_table_fig(similarity_matrix: np.ndarray,
+                             labels: List[str],
+                             test_words: List[str],
+                             fontsize: int = 8,
+                             ) -> plt.Figure:
     """
-    Returns fig showing 10 nearest neighbors from "model" for "tokens"
+    Returns fig showing 10 nearest neighbors for "test_words" in "similarity_matrix"
     """
 
     # load data
     neighbors_mat_list = []
     col_labels_list = []
-    num_cols = 5  # fixed
+    num_cols = min(4, len(test_words))  # fixed
     num_neighbors = 10  # fixed
-    for i in range(0, len(terms), num_cols):  # split probes into even sized lists
-        col_labels = terms[i:i + num_cols]
-        neighbors_mat = np.chararray((num_neighbors, num_cols), itemsize=20, unicode=True)
+    for i in range(0, len(test_words), num_cols):  # split test words into even sized lists
+        col_test_words = test_words[i:i + num_cols]
+        neighbors_mat = np.chararray((num_neighbors, num_cols), itemsize=40, unicode=True)
         neighbors_mat[:] = ''  # initialize so that mpl can read table
+
         # make column
-        for col_id, term in enumerate(col_labels):
-            term_id = model.hub.train_terms.term_id_dict[term]
-            token_sims = model.term_simmat[term_id]
-            neighbor_tuples = [(model.hub.train_terms.types[term_id], token_sim) for term_id, token_sim in
-                               enumerate(token_sims)
-                               if model.hub.train_terms.types[term_id] != term]
-            neighbor_tuples = sorted(neighbor_tuples, key=lambda i: i[1], reverse=True)[:num_neighbors]
-            neighbors_mat_col = ['{:>15} {:.2f}'.format(tuple[0], tuple[1])
-                                 for tuple in neighbor_tuples if tuple[0] != term]
+        for col_id, test_word in enumerate(col_test_words):
+            tw_sims = similarity_matrix[labels.index(test_word)]
+
+            neighbor_tuples = [(labels[w_id], token_sim) for w_id, token_sim in enumerate(tw_sims)
+                               if labels[w_id] != test_word]
+            neighbor_tuples = sorted(neighbor_tuples, key=lambda t: t[1], reverse=True)[:num_neighbors]
+
+            neighbors_mat_col = [f'{t[0]:<12} sim={t[1]:.2f}' for t in neighbor_tuples
+                                 if t[0] != test_word]
             neighbors_mat[:, col_id] = neighbors_mat_col
+
         # collect info for plotting
         neighbors_mat_list.append(neighbors_mat)
-        length_diff = num_cols - len(col_labels)
-        col_labels_list.append(col_labels + [' '] * length_diff)
+        length_diff = num_cols - len(col_test_words)
+        col_labels_list.append(col_test_words + [' '] * length_diff)
 
     # fig
-    num_tables = max(2, len(neighbors_mat_list))  # max 2 otherwise axarr is  not indexable
-    fig, axarr = plt.subplots(num_tables, 1,
-                              figsize=(config.Fig.fig_size, num_tables * (num_neighbors / 4.)),
-                              dpi=config.Fig.dpi)
-    for ax, neighbors_mat, col_labels in zip_longest(axarr, neighbors_mat_list, col_labels_list):
+    num_tables = max(2, len(neighbors_mat_list))  # max 2 otherwise axes cannot be sliced along axis 0
+    res, axes = plt.subplots(num_tables, 1,
+                             figsize=(7, num_tables * (num_neighbors / 4.)),
+                             dpi=config.Fig.dpi)
+    for ax, neighbors_mat, col_test_words in zip_longest(axes, neighbors_mat_list, col_labels_list):
         ax.axis('off')
         if neighbors_mat is not None:  # this allows turning off of axis even when neighbors_mat list length is < 2
-            table_ = ax.table(cellText=neighbors_mat, colLabels=col_labels,
-                              loc='center', colWidths=[0.2] * num_cols)
-            table_.auto_set_font_size(False)
-            table_.set_fontsize(8)
-    fig.tight_layout()
+            table_ = ax.table(cellText=neighbors_mat, colLabels=col_test_words, loc='center')
+            if fontsize is not None:
+                table_.auto_set_font_size(False)
+                table_.set_fontsize(fontsize)
+    res.tight_layout()
 
-    return fig
+    return res
 
 
-def make_sg_neighbors_table_fig(terms, model_id=config.Fig.SKIPGRAM_MODEL_ID):
-    """
-    Returns fig showing nearest 10 neighbors from pre-trained skip-gram model for "tokens"
-    """
+NUM_WORDS = 12
+NOISE = 0.3
 
-    # load data
-    token_simmat = np.load(config.Fig.SG_DIR / 'sg_token_simmat_model_{}.npy'.format(model_id))
-    token_list = np.load(config.Fig.SG_DIR, 'sg_types.npy')
-    token_id_dict = {token: token_id for token_id, token in enumerate(token_list)}
-    # make neighbors_mat
-    neighbors_mat_list = []
-    col_labels_list = []
-    num_cols = 5  # fixed
-    num_neighbors = 10  # fixed
-    for i in range(0, len(terms), num_cols):  # split probes into even sized lists
-        col_labels = terms[i:i + num_cols]
-        neighbors_mat = np.chararray((num_neighbors, num_cols), itemsize=20, unicode=True)
-        neighbors_mat[:] = ''  # initialize so that mpl can read table
-        # make column
-        for col_id, token in enumerate(col_labels):
-            token_id = token_id_dict[token]
-            token_sims = token_simmat[token_id]
-            neighbor_tuples = [(token_list[token_id], token_sim) for token_id, token_sim in enumerate(token_sims)
-                               if token_list[token_id] != token]
-            neighbor_tuples = sorted(neighbor_tuples, key=lambda i: i[1], reverse=True)[:num_neighbors]
-            neighbors_mat_col = ['{:>15} {:.2f}'.format(tuple[0], tuple[1])
-                                 for tuple in neighbor_tuples if tuple[0] != token]
-            neighbors_mat[:, col_id] = neighbors_mat_col
-        # collect info for plotting
-        neighbors_mat_list.append(neighbors_mat)
-        length_diff = num_cols - len(col_labels)
-        col_labels_list.append(['{} (skip-gram)'.format(token_) for token_ in col_labels] + [' '] * length_diff)
-    # fig
-    num_tables = max(2, len(neighbors_mat_list))  # max 2 otherwise axarr is  not indexable
-    fig, axarr = plt.subplots(num_tables, 1,
-                              figsize=(config.Fig.fig_size, num_tables * (num_neighbors / 4.)),
-                              dpi=config.Fig.dpi)
-    for ax, neighbors_mat, col_labels in zip_longest(axarr, neighbors_mat_list, col_labels_list):
-        ax.axis('off')
-        if neighbors_mat is not None:  # this allows turning off of axis even when neighbors_mat list length is < 2
-            table_ = ax.table(cellText=neighbors_mat, colLabels=col_labels,
-                              loc='center', colWidths=[0.2] * num_cols)
-            table_.auto_set_font_size(False)
-            table_.set_fontsize(8)
-    fig.tight_layout()
+# create random words and similarity matrix
+words = [f'word-{n}' for n in range(NUM_WORDS)]
+tmp1 = np.random.random((1, NUM_WORDS)).repeat(NUM_WORDS//2, axis=0) + NOISE * np.random.random((NUM_WORDS//2, NUM_WORDS))
+tmp2 = np.random.random((1, NUM_WORDS)).repeat(NUM_WORDS//2, axis=0) + NOISE * np.random.random((NUM_WORDS//2, NUM_WORDS))
+sim_matrix = np.vstack([tmp1, tmp2])
 
-    return fig
+fig = make_neighbors_table_fig(sim_matrix, words, test_words=words[:7])
+fig.show()

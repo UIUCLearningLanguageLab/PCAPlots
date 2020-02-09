@@ -2,8 +2,6 @@ from typing import List, Dict, Optional
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
-import random
-import string
 
 from src import config
 
