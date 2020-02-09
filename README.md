@@ -48,6 +48,12 @@ Shows nearest neighbors of a set of test words in an embedding space.
 
 <img src="images/nearest_neighbors.png" width="400">
 
+### Embeding Space Comparison
+
+Shows similarity between embedding spaces belonging to a set of model groups.
+
+<img src="images/embedding_space_comparison.png" width="400">
+
 ## Tips & Tricks
 
 ### Fontsize
