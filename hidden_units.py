@@ -34,13 +34,13 @@
         num_tables = len(probe_by_acts_mat_list)
         if num_tables == 1:
             fig, axarr = plt.subplots(1, 1,
-                                      figsize=(FigsConfigs.MAX_FIG_WIDTH, num_tables * (num_probes / 4.)),
-                                      dpi=FigsConfigs.DPI)
+                                      figsize=(config.Fig.MAX_FIG_WIDTH, num_tables * (num_probes / 4.)),
+                                      dpi=config.Fig.DPI)
             axarr = [axarr]
         else:
             fig, axarr = plt.subplots(num_tables, 1,
-                                      figsize=(FigsConfigs.MAX_FIG_WIDTH, num_tables * (num_probes / 4.)),
-                                      dpi=FigsConfigs.DPI)
+                                      figsize=(config.Fig.MAX_FIG_WIDTH, num_tables * (num_probes / 4.)),
+                                      dpi=config.Fig.DPI)
         for ax, probes_by_acts_mat, col_labels in zip(axarr, probe_by_acts_mat_list, col_labels_list):
             ax.axis('off')
             table_ = ax.table(cellText=probes_by_acts_mat, colLabels=col_labels, loc='center')

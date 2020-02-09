@@ -1,4 +1,6 @@
-# PlotUtils
+<div align="center">
+ <img src="images/logo.png" width="200"> 
+</div>
 
 A collection of useful plotting functions previously used to analyze word embeddings of neural networks
 
@@ -12,11 +14,9 @@ but when using dendrograms, one needs to set the extent of the main axis, which 
 yticklabels start from the origin - this means they need to be reversed to label the rows of the matrix correctly
 
 
-## TODO
+### PCA across Time
 
-* show example plots
-* add example dummy data
-* make plotting skip-gram neighbors work
+Shows evolution of pattern of activations on 2 principal components across training time.
 
 
 ## Tips & Tricks
@@ -24,14 +24,21 @@ yticklabels start from the origin - this means they need to be reversed to label
 ### Fontsize
 
 ```python
-plt.setp(ax.get_yticklabels(), fontsize=config.Fig.ax_fontsize)
-plt.setp(ax.get_xticklabels(), fontsize=config.Fig.ax_fontsize)
+import matplotlib.pyplot as plt
+
+fix, ax = plt.subplots()
+
+plt.setp(ax.get_yticklabels(), fontsize=12)
+plt.setp(ax.get_xticklabels(), fontsize=12)
 ```
 
 ### Tick Label Format
 
 ```python
 from matplotlib.ticker import FormatStrFormatter
+import matplotlib.pyplot as plt
+
+fix, ax = plt.subplots()
 
 ax.yaxis.set_major_formatter(FormatStrFormatter('%.1f'))
 ```
@@ -41,6 +48,9 @@ ax.yaxis.set_major_formatter(FormatStrFormatter('%.1f'))
 Use the following function to convert matplotlib figure objects to a format readadble by the browser:
 
 ```Python
+from io import BytesIO
+import base64
+
 def figs_to_imgs(*figs):
     imgs = []
     for fig in figs:

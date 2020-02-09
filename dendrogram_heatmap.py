@@ -10,7 +10,7 @@
         print('Cat simmat  min: {} max {}'.format(np.min(cat_simmat), np.max(cat_simmat)))
         print('Fig  min: {} max {}'.format(vmin, vmax))
         # fig
-        fig, ax_heatmap = plt.subplots(figsize=(FigsConfigs.MAX_FIG_WIDTH, 7), dpi=FigsConfigs.DPI)
+        fig, ax_heatmap = plt.subplots(figsize=(config.Fig.MAX_FIG_WIDTH, 7), dpi=config.Fig.DPI)
         ax_heatmap.yaxis.tick_right()
         divider = make_axes_locatable(ax_heatmap)
         ax_denright = divider.append_axes("right", 0.8, pad=0.0, sharey=ax_heatmap)
@@ -38,8 +38,8 @@
                                vmin=vmin, vmax=vmax)
         # colorbar
         cb = plt.colorbar(im, cax=ax_colorbar, ticks=[vmin, vmax], orientation='horizontal')
-        cb.ax.set_xticklabels([vmin, vmax], fontsize=FigsConfigs.AXLABEL_FONT_SIZE)
-        cb.set_label('Correlation Coefficient', labelpad=-10, fontsize=FigsConfigs.AXLABEL_FONT_SIZE)
+        cb.ax.set_xticklabels([vmin, vmax], fontsize=config.Fig.AXLABEL_FONT_SIZE)
+        cb.set_label('Correlation Coefficient', labelpad=-10, fontsize=config.Fig.AXLABEL_FONT_SIZE)
         # set heatmap ticklabels
         xlim = ax_heatmap.get_xlim()[1]
         ncols = len(cat_simmat_labels)
@@ -61,10 +61,10 @@
         # set label rotation and fontsize
         xlbls = ax_heatmap.xaxis.get_ticklabels()
         plt.setp(xlbls, rotation=-90)
-        plt.setp(xlbls, fontsize=FigsConfigs.AXLABEL_FONT_SIZE)
+        plt.setp(xlbls, fontsize=config.Fig.AXLABEL_FONT_SIZE)
         ylbls = ax_heatmap.yaxis.get_ticklabels()
         plt.setp(ylbls, rotation=0)
-        plt.setp(ylbls, fontsize=FigsConfigs.AXLABEL_FONT_SIZE)
+        plt.setp(ylbls, fontsize=config.Fig.AXLABEL_FONT_SIZE)
         # make dendrogram labels invisible
         plt.setp(ax_denright.get_yticklabels() + ax_denright.get_xticklabels(),
                  visible=False)
@@ -94,10 +94,10 @@
         print('Probe simmat  min: {} max {}'.format(np.min(probe_simmat), np.max(probe_simmat)))
         print('Fig  min: {} max {}'.format(vmin, vmax))
         # fig
-        fig, ax_heatmap = plt.subplots(figsize=(11, 7), dpi=FigsConfigs.DPI)
+        fig, ax_heatmap = plt.subplots(figsize=(11, 7), dpi=config.Fig.DPI)
         if label_doc_id:
             plt.title('Trained on {:,} terms'.format(model.mb_size * int(model.mb_name)),
-                      fontsize=FigsConfigs.AXLABEL_FONT_SIZE)
+                      fontsize=config.Fig.AXLABEL_FONT_SIZE)
         ax_heatmap.yaxis.tick_right()
         divider = make_axes_locatable(ax_heatmap)
         ax_dend = divider.append_axes("bottom", 0.8, pad=0.0)  # , sharex=ax_heatmap)
@@ -131,9 +131,9 @@
         y = range(num_probes)
         ax_freqs.barh(y, probe_freqs, color='black')
         ax_freqs.set_xlabel('Freq')
-        ax_freqs.set_xlim([0, FigsConfigs.PROBE_FREQ_YLIM])
-        ax_freqs.set_xticks([0, FigsConfigs.PROBE_FREQ_YLIM])
-        ax_freqs.set_xticklabels([0, FigsConfigs.PROBE_FREQ_YLIM])
+        ax_freqs.set_xlim([0, config.Fig.PROBE_FREQ_YLIM])
+        ax_freqs.set_xticks([0, config.Fig.PROBE_FREQ_YLIM])
+        ax_freqs.set_xticklabels([0, config.Fig.PROBE_FREQ_YLIM])
         ax_freq_lim0 = ax_freqs.get_ylim()[0] + 0.5
         ax_freq_lim1 = ax_freqs.get_ylim()[1] - 0.5
         ax_freqs.set_ylim([ax_freq_lim0, ax_freq_lim1])  # shift ticks to match heatmap
@@ -147,8 +147,8 @@
                                vmin=vmin, vmax=vmax)
         # colorbar
         cb = plt.colorbar(im, cax=ax_colorbar, ticks=[vmin, vmax], orientation='vertical')
-        cb.ax.set_xticklabels([vmin, vmax], fontsize=FigsConfigs.AXLABEL_FONT_SIZE, rotation=90)
-        cb.set_label('Correlation Coefficient', labelpad=-10, fontsize=FigsConfigs.AXLABEL_FONT_SIZE, rotation=90)
+        cb.ax.set_xticklabels([vmin, vmax], fontsize=config.Fig.AXLABEL_FONT_SIZE, rotation=90)
+        cb.set_label('Correlation Coefficient', labelpad=-10, fontsize=config.Fig.AXLABEL_FONT_SIZE, rotation=90)
         # set heatmap ticklabels
         ax_heatmap.xaxis.set_ticks([])
         ax_heatmap.xaxis.set_ticklabels([])
@@ -163,10 +163,10 @@
         # set label rotation and fontsize
         xlbls = ax_heatmap.xaxis.get_ticklabels()
         plt.setp(xlbls, rotation=-90)
-        plt.setp(xlbls, fontsize=FigsConfigs.AXLABEL_FONT_SIZE)
+        plt.setp(xlbls, fontsize=config.Fig.AXLABEL_FONT_SIZE)
         ylbls = ax_heatmap.yaxis.get_ticklabels()
         plt.setp(ylbls, rotation=0)
-        plt.setp(ylbls, fontsize=FigsConfigs.AXLABEL_FONT_SIZE)
+        plt.setp(ylbls, fontsize=config.Fig.AXLABEL_FONT_SIZE)
         # make dendrogram labels invisible
         plt.setp(ax_dend.get_yticklabels() + ax_dend.get_xticklabels(),
                  visible=False)

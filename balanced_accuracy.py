@@ -17,22 +17,22 @@
             xys.append((x, y, cat_probes))
         # fig
         num_axes = len(model.hub.probe_store.cats) // cats_per_axis + 1
-        fig, axarr = plt.subplots(num_axes, figsize=(FigsConfigs.MAX_FIG_WIDTH, 6 * num_axes), dpi=FigsConfigs.DPI)
+        fig, axarr = plt.subplots(num_axes, figsize=(config.Fig.MAX_FIG_WIDTH, 6 * num_axes), dpi=config.Fig.DPI)
         for n, ax in enumerate(axarr):
             # truncate data
             xys_truncated = xys[n * cats_per_axis: (n + 1) * cats_per_axis]
             cats_sorted_by_fs_truncated = cats_sorted_by_fs[n * cats_per_axis: (n + 1) * cats_per_axis]
             # axis
             ax.set_ylabel('Avg Probe Balanced Accuracy ({})'.format(context_type),
-                          fontsize=FigsConfigs.AXLABEL_FONT_SIZE)
+                          fontsize=config.Fig.AXLABEL_FONT_SIZE)
             ax.set_xticks(np.arange(cats_per_axis), minor=False)  # shifts xtick labels right
-            ax.set_xticklabels(cats_sorted_by_fs_truncated, minor=False, fontsize=FigsConfigs.TICKLABEL_FONT_SIZE,
+            ax.set_xticklabels(cats_sorted_by_fs_truncated, minor=False, fontsize=config.Fig.TICKLABEL_FONT_SIZE,
                                rotation=90)
             ax.set_xlim([0, cats_per_axis])
             ax.spines['right'].set_visible(False)
             ax.spines['top'].set_visible(False)
             ax.tick_params(axis='both', which='both', top='off', right='off')
-            ax.axhline(y=mean_fs, alpha=FigsConfigs.FILL_ALPHA, c='grey', linestyle='--', zorder=1)
+            ax.axhline(y=mean_fs, alpha=config.Fig.FILL_ALPHA, c='grey', linestyle='--', zorder=1)
             # plot
             annotated_y_ints_long_words_prev_cat = []
             for (x, y, cat_probes) in xys_truncated:
@@ -100,8 +100,8 @@ def make_ba_by_cat_figs(model_groups, model_descs):
         else:
             num_sgs = 0
         # fig
-        fig, ax = plt.subplots(figsize=(FigsConfigs.MAX_FIG_WIDTH, 6))
-        plt.title('context_type="{}"'.format(context_type), fontsize=FigsConfigs.AXLABEL_FONT_SIZE)
+        fig, ax = plt.subplots(figsize=(config.Fig.MAX_FIG_WIDTH, 6))
+        plt.title('context_type="{}"'.format(context_type), fontsize=config.Fig.AXLABEL_FONT_SIZE)
         # plot
         sns.heatmap(cat_ba_mat, ax=ax, square=True, annot=False,
                     annot_kws={"size": 6}, cbar_kws={"shrink": .5},
@@ -153,11 +153,11 @@ def make_ba_by_cat_figs(model_groups, model_descs):
             num_models = len(models)
             xys.append((x, y, sem, model_desc, num_models))
         # fig
-        fig, ax = plt.subplots(figsize=(FigsConfigs.MAX_FIG_WIDTH, 6))
-        plt.title('context_type="{}"'.format(context_type), fontsize=FigsConfigs.AXLABEL_FONT_SIZE)
-        ax.set_ylabel('Balanced Accuracy (+/-SEM)', fontsize=FigsConfigs.AXLABEL_FONT_SIZE, labelpad=0.0)
+        fig, ax = plt.subplots(figsize=(config.Fig.MAX_FIG_WIDTH, 6))
+        plt.title('context_type="{}"'.format(context_type), fontsize=config.Fig.AXLABEL_FONT_SIZE)
+        ax.set_ylabel('Balanced Accuracy (+/-SEM)', fontsize=config.Fig.AXLABEL_FONT_SIZE, labelpad=0.0)
         ax.set_xticks(np.arange(num_cats), minor=False)
-        ax.set_xticklabels(sorted_cats, minor=False, fontsize=FigsConfigs.TICKLABEL_FONT_SIZE, rotation=90)
+        ax.set_xticklabels(sorted_cats, minor=False, fontsize=config.Fig.TICKLABEL_FONT_SIZE, rotation=90)
         ax.set_xlim([0, len(cats)])
         ax.set_ylim([0.5, 1.0])
         ax.set_axisbelow(True)  # put grid under plot lines
@@ -169,9 +169,9 @@ def make_ba_by_cat_figs(model_groups, model_descs):
         # plot
         for (x, y, sem, model_desc, num_models) in xys:
             color = next(palette)
-            ax.plot(x, y, '-', color=color, linewidth=FigsConfigs.LINEWIDTH,
+            ax.plot(x, y, '-', color=color, linewidth=config.Fig.LINEWIDTH,
                     label='{} n={}'.format(model_desc, num_models))
-            ax.fill_between(x, np.add(y, sem), np.subtract(y, sem), alpha=FigsConfigs.FILL_ALPHA, color='grey')
+            ax.fill_between(x, np.add(y, sem), np.subtract(y, sem), alpha=config.Fig.FILL_ALPHA, color='grey')
         # plot sg
         path = GlobalConfigs.SG_DIR / 'sg_df_{}_{}.csv'.format(hub_mode, sg_embed_size)
         if path.exists():
@@ -184,9 +184,9 @@ def make_ba_by_cat_figs(model_groups, model_descs):
             y = [cat_y_dict[cat] for cat in sorted_cats]
             sem = [cat_sem_dict[cat] for cat in sorted_cats]
             x = range(num_cats)
-            ax.plot(x, y, '-', color='black', linewidth=FigsConfigs.LINEWIDTH,
+            ax.plot(x, y, '-', color='black', linewidth=config.Fig.LINEWIDTH,
                     label='skipgram num_h{} n={}'.format(sg_embed_size, num_sgs))
-            ax.fill_between(x, np.add(y, sem), np.subtract(y, sem), alpha=FigsConfigs.FILL_ALPHA, color='grey')
+            ax.fill_between(x, np.add(y, sem), np.subtract(y, sem), alpha=config.Fig.FILL_ALPHA, color='grey')
             sg_avg_probe_bas = df_sg.filter(regex="avg_probe_ba_\d").mean(axis=0)
             print('Skip-gram avg_probe_ba mean across models:', sg_avg_probe_bas.mean())
             print('Skip-gram avg_probe_ba sem across models:', sg_avg_probe_bas.sem())

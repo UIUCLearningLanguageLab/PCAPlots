@@ -31,8 +31,8 @@ def make_neighbors_figs(model, field_input):
         # fig
         num_tables = max(2, len(neighbors_mat_list))  # max 2 otherwise axarr is  not indexable
         fig, axarr = plt.subplots(num_tables, 1,
-                                  figsize=(FigsConfigs.MAX_FIG_WIDTH, num_tables * (num_neighbors / 4.)),
-                                  dpi=FigsConfigs.DPI)
+                                  figsize=(config.Fig.MAX_FIG_WIDTH, num_tables * (num_neighbors / 4.)),
+                                  dpi=config.Fig.DPI)
         for ax, neighbors_mat, col_labels in zip_longest(axarr, neighbors_mat_list, col_labels_list):
             ax.axis('off')
             if neighbors_mat is not None:  # this allows turning off of axis even when neighbors_mat list length is < 2
@@ -44,7 +44,7 @@ def make_neighbors_figs(model, field_input):
         print('{} completed in {:.1f} secs'.format(sys._getframe().f_code.co_name, time.time() - start))
         return fig
 
-    def make_sg_neighbors_table_fig(terms, model_id=FigsConfigs.SKIPGRAM_MODEL_ID):
+    def make_sg_neighbors_table_fig(terms, model_id=config.Fig.SKIPGRAM_MODEL_ID):
         """
         Returns fig showing nearest 10 neighbors from pre-trained skip-gram model for "tokens"
         """
@@ -80,8 +80,8 @@ def make_neighbors_figs(model, field_input):
         # fig
         num_tables = max(2, len(neighbors_mat_list))  # max 2 otherwise axarr is  not indexable
         fig, axarr = plt.subplots(num_tables, 1,
-                                  figsize=(FigsConfigs.MAX_FIG_WIDTH, num_tables * (num_neighbors / 4.)),
-                                  dpi=FigsConfigs.DPI)
+                                  figsize=(config.Fig.MAX_FIG_WIDTH, num_tables * (num_neighbors / 4.)),
+                                  dpi=config.Fig.DPI)
         for ax, neighbors_mat, col_labels in zip_longest(axarr, neighbors_mat_list, col_labels_list):
             ax.axis('off')
             if neighbors_mat is not None:  # this allows turning off of axis even when neighbors_mat list length is < 2

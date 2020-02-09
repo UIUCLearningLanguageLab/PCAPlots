@@ -10,9 +10,9 @@
         probe_simmat[np.tril_indices(probe_simmat.shape[0], -1)] = np.nan
         probe_simmat_values = probe_simmat[~np.isnan(probe_simmat)]
         # fig
-        fig, ax = plt.subplots(figsize=(FigsConfigs.MAX_FIG_WIDTH, 3), dpi=FigsConfigs.DPI)
-        ax.set_xlabel('Similarity', fontsize=FigsConfigs.AXLABEL_FONT_SIZE)
-        ax.set_ylabel('Frequency', fontsize=FigsConfigs.AXLABEL_FONT_SIZE)
+        fig, ax = plt.subplots(figsize=(config.Fig.MAX_FIG_WIDTH, 3), dpi=config.Fig.DPI)
+        ax.set_xlabel('Similarity', fontsize=config.Fig.AXLABEL_FONT_SIZE)
+        ax.set_ylabel('Frequency', fontsize=config.Fig.AXLABEL_FONT_SIZE)
         ax.spines['right'].set_visible(False)
         ax.spines['top'].set_visible(False)
         ax.tick_params(axis='both', which='both', top='off', right='off')
@@ -22,7 +22,7 @@
         bins = np.arange(-1, 1, step_size)
         hist, _ = np.histogram(probe_simmat_values, bins=bins)
         x_binned = bins[:-1]
-        ax.plot(x_binned, hist, '-', linewidth=FigsConfigs.LINEWIDTH, c='black')
+        ax.plot(x_binned, hist, '-', linewidth=config.Fig.LINEWIDTH, c='black')
         plt.tight_layout()
         print('{} completed in {:.1f} secs'.format(sys._getframe().f_code.co_name, time.time() - start))
         return fig
@@ -49,10 +49,10 @@
             y.append(fit)
         x = np.asarray(dists)
         # fig
-        fig, ax = plt.subplots(figsize=(FigsConfigs.MAX_FIG_WIDTH, 3), dpi=FigsConfigs.DPI)
+        fig, ax = plt.subplots(figsize=(config.Fig.MAX_FIG_WIDTH, 3), dpi=config.Fig.DPI)
         plt.title('Terms')
-        ax.set_ylabel('Fit', fontsize=FigsConfigs.AXLABEL_FONT_SIZE)
-        ax.set_xlabel('Context Distance', fontsize=FigsConfigs.AXLABEL_FONT_SIZE)
+        ax.set_ylabel('Fit', fontsize=config.Fig.AXLABEL_FONT_SIZE)
+        ax.set_xlabel('Context Distance', fontsize=config.Fig.AXLABEL_FONT_SIZE)
         ax.spines['right'].set_visible(False)
         ax.spines['top'].set_visible(False)
         ax.tick_params(axis='both', which='both', top='off', right='off')
@@ -114,7 +114,7 @@
             term_simmat_mat = term_simmat_mat
         sim_simmat = pd.DataFrame(term_simmat_mat).T.corr().values
         # fig
-        fig, ax = plt.subplots(figsize=(FigsConfigs.MAX_FIG_WIDTH, FigsConfigs.MAX_FIG_WIDTH))
+        fig, ax = plt.subplots(figsize=(config.Fig.MAX_FIG_WIDTH, config.Fig.MAX_FIG_WIDTH))
         mask = np.zeros_like(sim_simmat, dtype=np.bool)
         mask[np.triu_indices_from(mask, 1)] = True
         sns.heatmap(sim_simmat, ax=ax, square=True, annot=False,

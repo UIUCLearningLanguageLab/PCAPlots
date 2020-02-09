@@ -1,4 +1,4 @@
-    def make_cat_cluster_fig(cat, bottom_off=False, max_probes=20, metric='cosine', x_max=FigsConfigs.CAT_CLUSTER_XLIM):
+    def make_cat_cluster_fig(cat, bottom_off=False, max_probes=20, metric='cosine', x_max=config.Fig.CAT_CLUSTER_XLIM):
         """
         Returns fig showing hierarchical clustering of probes in single category
         """
@@ -13,7 +13,7 @@
             probes_in_cat = cat_prototypes_df.index.tolist()
         # fig
         rcParams['lines.linewidth'] = 2.0
-        fig, ax = plt.subplots(figsize=(FigsConfigs.MAX_FIG_WIDTH, 4), dpi=FigsConfigs.DPI)
+        fig, ax = plt.subplots(figsize=(config.Fig.MAX_FIG_WIDTH, 4), dpi=config.Fig.DPI)
         # dendrogram
         dist_matrix = pdist(cat_prototypes_df.values, metric=metric)
         linkages = linkage(dist_matrix, method='complete')
@@ -51,7 +51,7 @@ def make_multi_cat_clust_fig(cats, metric='cosine'):  # TODO make into config
     cats_probe_list = df.index
     # fig
     rcParams['lines.linewidth'] = 2.0
-    fig, ax = plt.subplots(figsize=(FigsConfigs.MAX_FIG_WIDTH, 5 * len(cats)), dpi=FigsConfigs.DPI)
+    fig, ax = plt.subplots(figsize=(config.Fig.MAX_FIG_WIDTH, 5 * len(cats)), dpi=config.Fig.DPI)
     # dendrogram
     dist_matrix = pdist(cat_acts_mat, metric)
     linkages = linkage(dist_matrix, method='complete')
