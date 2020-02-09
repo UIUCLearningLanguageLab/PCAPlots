@@ -1,82 +1,111 @@
+from typing import List, Dict, Optional
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
+import random
+import string
 
 from src import config
 
+plt.rcParams['font.family'] = 'monospace'  # each character in this font is equally wide
 
-def make_principal_comps_table_fig(pc_id):
+
+def make_principal_comps_table_fig(embeddings: np.ndarray,
+                                   words: List[str],
+                                   component: int,
+                                   num_rows=4,
+                                   w2f: Optional[Dict[str, int]] = None,
+                                   fontsize: Optional[int] = None,
+                                   ) -> plt.Figure:
     """
     Returns fig showing table of words loading highest and lowest on a principal component
     """
 
+    assert np.ndim(embeddings) == 2  # (words, embedding size)
+    assert len(embeddings) == len(words)
+
+    if w2f is None:
+        w2f = {w: 'n/a' for w in words}
+
     num_cols = 2
     col_labels = ['Low End', 'High End']
 
-    # load data
-    acts_mat = model.term_acts_mat if config.Fig.SVD_IS_TERMS else model.get_multi_probe_prototype_acts_df().values
-    tokens = model.hub.train_terms.types if config.Fig.SVD_IS_TERMS else model.hub.probe_store.types
-    pca_model = PCA(n_components=config.Fig.NUM_PCS)
-    pcs = pca_model.fit_transform(acts_mat)
-    expl_var_perc = np.asarray(pca_model.explained_variance_ratio_) * 100
-    pc = pcs[:, pc_id]
+    # do PCA
+    num_components = component + 1
+    pca_model = PCA(n_components=num_components)
+    transformation = pca_model.fit_transform(embeddings)
+    explained_var_ratio = np.asarray(pca_model.explained_variance_ratio_) * 100
+    pc = transformation[:, component]
 
     # sort and filter
-    sorted_pc, sorted_tokens = list(zip(*sorted(zip(pc, tokens), key=lambda i: i[0])))
-    col0_strs = ['{} {:.2f} (freq: {:,})'.format(term, loading, sum(model.hub.term_part_freq_dict[term]))
-                 for term, loading in zip(
-            sorted_tokens[:config.Fig.NUM_PCA_LOADINGS], sorted_pc[:config.Fig.NUM_PCA_LOADINGS])
-                 if sum(model.hub.term_part_freq_dict[term]) > config.Fig.PCA_FREQ_THR]
-    col1_strs = ['{} {:.2f} ({:,})'.format(term, loading, sum(model.hub.term_part_freq_dict[term]))
-                 for term, loading in zip(
-            sorted_tokens[-config.Fig.NUM_PCA_LOADINGS:][::-1], sorted_pc[-config.Fig.NUM_PCA_LOADINGS:][::-1])
-                 if sum(model.hub.term_part_freq_dict[term]) > config.Fig.PCA_FREQ_THR]
+    sorted_pc, sorted_words = list(zip(*sorted(zip(pc, words), key=lambda i: i[0])))
 
-    # make probes_mat
-    max_rows = max(len(col0_strs), len(col1_strs))
-    probes_mat = np.chararray((max_rows, num_cols), itemsize=40, unicode=True)
-    probes_mat[:] = ''  # initialize so that mpl can read table
-    probes_mat[:len(col0_strs), 0] = col0_strs
-    probes_mat[:len(col1_strs), 1] = col1_strs
+    col0_strings = [f'{w:<12} {loading:-2.2f} (freq: {w2f[w]})'
+                    for w, loading in zip(sorted_words[:num_rows], sorted_pc[:num_rows])]
+
+    col1_strings = [f'{w:<12} {loading:-2.2f} (freq: {w2f[w]})'
+                    for w, loading in zip(sorted_words[-num_rows:][::-1], sorted_pc[-num_rows:][::-1])]
+
+    # make matrix containing text
+    max_rows = max(len(col0_strings), len(col1_strings))
+    text_mat = np.chararray((max_rows, num_cols), itemsize=60, unicode=True)
+    text_mat[:] = ''  # initialize so that mpl can read table
+    text_mat[:len(col0_strings), 0] = col0_strings
+    text_mat[:len(col1_strings), 1] = col1_strings
 
     # fig
-    fig, ax = plt.subplots(figsize=(config.Fig.fig_size, 0.25 * max_rows), dpi=config.Fig.dpi)
+    res, ax = plt.subplots(figsize=config.Fig.fig_size, dpi=config.Fig.dpi)
     ax.set_title('Principal Component {} ({:.2f}% var)'.format(
-        pc_id, expl_var_perc[pc_id]), fontsize=config.Fig.ax_label_fontsize)
+        component, explained_var_ratio[component]), fontsize=config.Fig.ax_label_fontsize)
     ax.axis('off')
 
-    # plot
-    table_ = ax.table(cellText=probes_mat, colLabels=col_labels,
-                      loc='center', colWidths=[0.3] * num_cols)
-    table_.auto_set_font_size(False)
-    table_.set_fontsize(8)
-    fig.tight_layout()
+    # plot table
+    table_ = ax.table(cellText=text_mat, colLabels=col_labels, loc='center')
+    if fontsize is not None:
+        table_.auto_set_font_size(False)
+        table_.set_fontsize(fontsize)
+    res.tight_layout()
 
-    return fig
+    return res
 
 
-def make_principal_comps_line_fig(pc_id):
+def make_loadings_line_fig(embeddings: np.ndarray,
+                           component: int,
+                           ) -> plt.Figure:
     """
-    Returns fig showing loadings on a specified principal component
+    Returns fig showing line plot of loadings on a specified principal component
     """
 
-    # load data
-    acts_mat = model.term_acts_mat if config.Fig.SVD_IS_TERMS else model.get_multi_probe_prototype_acts_df().values
-    pca_model = PCA(n_components=config.Fig.NUM_PCS)
-    pcs = pca_model.fit_transform(acts_mat)
-    pc = pcs[:, pc_id]
+    # do PCA
+    num_components = component + 1
+    pca_model = PCA(n_components=num_components)
+    transformation = pca_model.fit_transform(embeddings)
+    pc = transformation[:, component]
 
     # fig
-    fig, ax = plt.subplots(figsize=(config.Fig.fig_size, 3), dpi=config.Fig.dpi)
+    res, ax = plt.subplots(figsize=config.Fig.fig_size, dpi=config.Fig.dpi)
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
-    ax.tick_params(axis='both', which='both', top='off', right='off')
 
     # plot
     ax.plot(sorted(pc), '-', linewidth=config.Fig.LINEWIDTH, color='black')
     ax.set_xticklabels([])
-    ax.set_xlabel('Token IDs', fontsize=config.Fig.ax_label_fontsize)
-    ax.set_ylabel('PC {} Loading'.format(pc_id), fontsize=config.Fig.ax_label_fontsize)
-    fig.tight_layout()
+    ax.set_xlabel('Words', fontsize=config.Fig.ax_label_fontsize)
+    ax.set_ylabel(f'Principal Component {component} Loading', fontsize=config.Fig.ax_label_fontsize)
+    res.tight_layout()
 
-    return fig
+    return res
+
+
+NUM_WORDS = 12
+EMBED_SIZE = 8
+
+# create random words and random embeddings
+words = [f'word-{random.choice(string.ascii_letters)}' for _ in range(NUM_WORDS)]
+embeddings = np.random.random((NUM_WORDS, EMBED_SIZE))
+
+fig = make_principal_comps_table_fig(embeddings, words, component=0, num_rows=6)
+fig.show()
+
+fig = make_loadings_line_fig(embeddings, component=0)
+fig.show()

@@ -20,7 +20,6 @@ def make_scree_fig():
     fig, ax = plt.subplots(figsize=(config.Fig.fig_size, 3), dpi=config.Fig.dpi)
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
-    ax.tick_params(axis='both', which='both', top='off', right='off')
     ax.set_xticklabels([])
     ax.set_xlabel('Principal Component', fontsize=config.Fig.ax_label_fontsize)
     ax.set_ylabel('% Var Explained (Cumulative)', fontsize=config.Fig.ax_label_fontsize)

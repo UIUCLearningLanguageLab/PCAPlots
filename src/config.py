@@ -16,7 +16,6 @@ class Fig:
     PROBE_FREQ_YLIM = 1000
     NUM_PROBES_IN_QUARTILE = 5
     ALTERNATE_PROBES = ['cat', 'plate', 'dad', 'two', 'meat', 'tuesday', 'january']
-    NUM_PCA_LOADINGS = 200
     CLUSTER_PCA_ITEM_ROWS = False
     CLUSTER_PCA_CAT_ROWS = True
     CLUSTER_PCA_CAT_COLS = True

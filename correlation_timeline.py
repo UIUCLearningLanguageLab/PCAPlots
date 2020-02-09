@@ -54,7 +54,6 @@ def make_probe_probe_corr_traj_fig(probes):
                     ax.set_xlabel('Mini Batch', fontsize=config.Fig.ax_label_fontsize)
                 ax.spines['right'].set_visible(False)
                 ax.spines['top'].set_visible(False)
-                ax.tick_params(axis='both', which='both', top='off', right='off')
                 ax.xaxis.set_major_formatter(FuncFormatter(human_format))
                 ax.set_ylim([min(y_mins), 1])
             # plot

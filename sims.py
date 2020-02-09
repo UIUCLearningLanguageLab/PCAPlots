@@ -15,7 +15,6 @@
         ax.set_ylabel('Frequency', fontsize=config.Fig.AXLABEL_FONT_SIZE)
         ax.spines['right'].set_visible(False)
         ax.spines['top'].set_visible(False)
-        ax.tick_params(axis='both', which='both', top='off', right='off')
         ax.xaxis.grid(True)
         # plot
         step_size = 1.0 / num_bins
@@ -55,7 +54,6 @@
         ax.set_xlabel('Context Distance', fontsize=config.Fig.AXLABEL_FONT_SIZE)
         ax.spines['right'].set_visible(False)
         ax.spines['top'].set_visible(False)
-        ax.tick_params(axis='both', which='both', top='off', right='off')
         ax.axhline(y=0, color='grey', zorder=0)
         ax.set_xticks(dists)
         ax.set_xticklabels(dists)

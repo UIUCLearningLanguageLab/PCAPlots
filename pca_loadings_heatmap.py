@@ -40,8 +40,6 @@ def make_pca_loadings_heatmap_fig(embeddings: np.ndarray,
         avg_loadings.append(avg_loading)
     grouped_loadings = np.vstack(avg_loadings)
 
-    print(grouped_loadings.shape)
-
     # fig
     res, ax_heatmap = plt.subplots(figsize=config.Fig.fig_size, dpi=config.Fig.dpi)
     divider = make_axes_locatable(ax_heatmap)

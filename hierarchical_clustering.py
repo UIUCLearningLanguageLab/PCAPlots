@@ -32,13 +32,11 @@ def make_cat_cluster_fig(cat, bottom_off=False, max_probes=20, metric='cosine', 
                leaf_font_size=8)
     ax.set_title(cat)
     ax.set_xlim([0, x_max])
-    ax.tick_params(axis='both', which='both', top='off', right='off', left='off')
     ax.spines['right'].set_visible(False)
     ax.spines['left'].set_visible(False)
     ax.spines['top'].set_visible(False)
     if bottom_off:
         ax.xaxis.set_ticklabels([])  # hides ticklabels
-        ax.tick_params(axis='both', which='both', bottom='off')
         ax.spines['bottom'].set_visible(False)
     fig.tight_layout()
 
@@ -64,7 +62,6 @@ def make_multi_cat_clust_fig(cats, metric='cosine'):
                labels=cats_probe_list,
                orientation='right',
                leaf_font_size=10)
-    ax.tick_params(axis='both', which='both', top='off', right='off', left='off')
     ax.spines['right'].set_visible(False)
     ax.spines['left'].set_visible(False)
     ax.spines['top'].set_visible(False)

@@ -41,7 +41,6 @@ def make_ba_breakdown_annotated_fig(context_type):
         ax.set_xlim([0, cats_per_axis])
         ax.spines['right'].set_visible(False)
         ax.spines['top'].set_visible(False)
-        ax.tick_params(axis='both', which='both', top='off', right='off')
         ax.axhline(y=mean_fs, alpha=config.Fig.FILL_ALPHA, c='grey', linestyle='--', zorder=1)
 
         # plot
@@ -174,7 +173,6 @@ def make_ba_by_cat_fig(context_type, sg_embed_size=512):
     ax.set_axisbelow(True)  # put grid under plot lines
     ax.yaxis.grid(True)
     ax.xaxis.grid(True)
-    ax.tick_params(axis='both', which='both', top='off', right='off')
     ax.spines['right'].set_visible(False)
     ax.spines['top'].set_visible(False)
 
