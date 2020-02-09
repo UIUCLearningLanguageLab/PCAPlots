@@ -34,7 +34,7 @@ def make_ba_breakdown_annotated_fig(context_type):
 
         # axis
         ax.set_ylabel('Avg Probe Balanced Accuracy ({})'.format(context_type),
-                      fontsize=config.Fig.AXLABEL_FONT_SIZE)
+                      fontsize=config.Fig.ax_label_fontsize)
         ax.set_xticks(np.arange(cats_per_axis), minor=False)  # shifts xtick labels right
         ax.set_xticklabels(cats_sorted_by_fs_truncated, minor=False, fontsize=config.Fig.TICKLABEL_FONT_SIZE,
                            rotation=90)
@@ -114,7 +114,7 @@ def make_cat_ba_mat_fig(context_type, sg_embed_size=512):
 
     # fig
     fig, ax = plt.subplots(figsize=(config.Fig.fig_size, 6))
-    plt.title('context_type="{}"'.format(context_type), fontsize=config.Fig.AXLABEL_FONT_SIZE)
+    plt.title('context_type="{}"'.format(context_type), fontsize=config.Fig.ax_label_fontsize)
 
     # plot
     sns.heatmap(cat_ba_mat, ax=ax, square=True, annot=False,
@@ -165,8 +165,8 @@ def make_ba_by_cat_fig(context_type, sg_embed_size=512):
 
     # fig
     fig, ax = plt.subplots(figsize=(config.Fig.fig_size, 6))
-    plt.title('context_type="{}"'.format(context_type), fontsize=config.Fig.AXLABEL_FONT_SIZE)
-    ax.set_ylabel('Balanced Accuracy (+/-SEM)', fontsize=config.Fig.AXLABEL_FONT_SIZE, labelpad=0.0)
+    plt.title('context_type="{}"'.format(context_type), fontsize=config.Fig.ax_label_fontsize)
+    ax.set_ylabel('Balanced Accuracy (+/-SEM)', fontsize=config.Fig.ax_label_fontsize, labelpad=0.0)
     ax.set_xticks(np.arange(num_cats), minor=False)
     ax.set_xticklabels(sorted_cats, minor=False, fontsize=config.Fig.TICKLABEL_FONT_SIZE, rotation=90)
     ax.set_xlim([0, len(cats)])

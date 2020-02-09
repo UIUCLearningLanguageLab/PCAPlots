@@ -47,11 +47,11 @@ def make_probe_probe_corr_traj_fig(probes):
                 ax.legend(handle, label, loc=6, ncol=num_probes // num_leg_per_col)
                 continue
             else:
-                ax.set_title(probe, fontsize=config.Fig.AXLABEL_FONT_SIZE)
+                ax.set_title(probe, fontsize=config.Fig.ax_label_fontsize)
                 if ax_id % 2 == 0:
-                    ax.set_ylabel('Correlation'.format(probe), fontsize=config.Fig.AXLABEL_FONT_SIZE)
+                    ax.set_ylabel('Correlation'.format(probe), fontsize=config.Fig.ax_label_fontsize)
                 if row_id == num_rows - 1:
-                    ax.set_xlabel('Mini Batch', fontsize=config.Fig.AXLABEL_FONT_SIZE)
+                    ax.set_xlabel('Mini Batch', fontsize=config.Fig.ax_label_fontsize)
                 ax.spines['right'].set_visible(False)
                 ax.spines['top'].set_visible(False)
                 ax.tick_params(axis='both', which='both', top='off', right='off')

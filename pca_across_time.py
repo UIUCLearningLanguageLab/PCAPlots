@@ -28,7 +28,7 @@ def make_pca_across_time_fig(embeddings: np.ndarray,
                              num_ticks: int,
                              ) -> plt.Figure:
     """
-    Returns fig showing evolution of embeddings in 2D space using PCA.
+    Returns res showing evolution of embeddings in 2D space using PCA.
     """
 
     assert np.ndim(embeddings) == 3  # (ticks, words, embedding dimensions)
@@ -49,13 +49,9 @@ def make_pca_across_time_fig(embeddings: np.ndarray,
         transformations.append(pca_model.transform(ei)[:, [component1, component2]])
 
     # fig
-    fig, ax = plt.subplots(figsize=config.Fig.fig_size, dpi=config.Fig.dpi)
+    res, ax = plt.subplots(figsize=config.Fig.fig_size, dpi=config.Fig.dpi)
     ax.set_title(f'Principal components {component1} and {component2}\nEvolution across training')
     ax.axis('off')
-    x_max = np.max(np.dstack(transformations)[:, 0, :]) * 1.2
-    y_max = np.max(np.dstack(transformations)[:, 1, :]) * 1.2
-    ax.set_xlim([-x_max, x_max])
-    ax.set_ylim([-y_max, y_max])
     ax.axhline(y=0, linestyle='--', c='grey', linewidth=1.0)
     ax.axvline(x=0, linestyle='--', c='grey', linewidth=1.0)
 
@@ -73,9 +69,7 @@ def make_pca_across_time_fig(embeddings: np.ndarray,
         txt.set_path_effects([
             patheffects.Stroke(linewidth=config.Fig.LINEWIDTH, foreground="w"), patheffects.Normal()])
 
-    fig.tight_layout()
-
-    return fig
+    return res
 
 
 NUM_TICKS = 12

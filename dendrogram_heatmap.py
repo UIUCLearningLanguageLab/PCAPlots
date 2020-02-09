@@ -1,5 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.cluster.hierarchy import dendrogram, linkage
+from scipy.spatial.distance import pdist
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 from src import config
 
@@ -47,8 +50,8 @@ def make_cat_sim_dh_fig(num_colors=None, y_title=False, vmin=0.0, vmax=1.0):
                            vmin=vmin, vmax=vmax)
     # colorbar
     cb = plt.colorbar(im, cax=ax_colorbar, ticks=[vmin, vmax], orientation='horizontal')
-    cb.ax.set_xticklabels([vmin, vmax], fontsize=config.Fig.AXLABEL_FONT_SIZE)
-    cb.set_label('Correlation Coefficient', labelpad=-10, fontsize=config.Fig.AXLABEL_FONT_SIZE)
+    cb.ax.set_xticklabels([vmin, vmax], fontsize=config.Fig.ax_label_fontsize)
+    cb.set_label('Correlation Coefficient', labelpad=-10, fontsize=config.Fig.ax_label_fontsize)
 
     # set heatmap ticklabels
     xlim = ax_heatmap.get_xlim()[1]
@@ -73,10 +76,10 @@ def make_cat_sim_dh_fig(num_colors=None, y_title=False, vmin=0.0, vmax=1.0):
     # set label rotation and fontsize
     xlbls = ax_heatmap.xaxis.get_ticklabels()
     plt.setp(xlbls, rotation=-90)
-    plt.setp(xlbls, fontsize=config.Fig.AXLABEL_FONT_SIZE)
+    plt.setp(xlbls, fontsize=config.Fig.ax_label_fontsize)
     ylbls = ax_heatmap.yaxis.get_ticklabels()
     plt.setp(ylbls, rotation=0)
-    plt.setp(ylbls, fontsize=config.Fig.AXLABEL_FONT_SIZE)
+    plt.setp(ylbls, fontsize=config.Fig.ax_label_fontsize)
 
     # make dendrogram labels invisible
     plt.setp(ax_denright.get_yticklabels() + ax_denright.get_xticklabels(),
@@ -111,7 +114,7 @@ def make_probe_sim_dh_fig_jw(probes,
     fig, ax_heatmap = plt.subplots(figsize=(11, 7), dpi=config.Fig.dpi)
     if label_doc_id:
         plt.title('Trained on {:,} terms'.format(model.mb_size * int(model.mb_name)),
-                  fontsize=config.Fig.AXLABEL_FONT_SIZE)
+                  fontsize=config.Fig.ax_label_fontsize)
     ax_heatmap.yaxis.tick_right()
     divider = make_axes_locatable(ax_heatmap)
     ax_dend = divider.append_axes("bottom", 0.8, pad=0.0)  # , sharex=ax_heatmap)
@@ -165,8 +168,8 @@ def make_probe_sim_dh_fig_jw(probes,
 
     # colorbar
     cb = plt.colorbar(im, cax=ax_colorbar, ticks=[vmin, vmax], orientation='vertical')
-    cb.ax.set_xticklabels([vmin, vmax], fontsize=config.Fig.AXLABEL_FONT_SIZE, rotation=90)
-    cb.set_label('Correlation Coefficient', labelpad=-10, fontsize=config.Fig.AXLABEL_FONT_SIZE, rotation=90)
+    cb.ax.set_xticklabels([vmin, vmax], fontsize=config.Fig.ax_label_fontsize, rotation=90)
+    cb.set_label('Correlation Coefficient', labelpad=-10, fontsize=config.Fig.ax_label_fontsize, rotation=90)
 
     # set heatmap ticklabels
     ax_heatmap.xaxis.set_ticks([])
@@ -184,10 +187,10 @@ def make_probe_sim_dh_fig_jw(probes,
     # set label rotation and fontsize
     xlbls = ax_heatmap.xaxis.get_ticklabels()
     plt.setp(xlbls, rotation=-90)
-    plt.setp(xlbls, fontsize=config.Fig.AXLABEL_FONT_SIZE)
+    plt.setp(xlbls, fontsize=config.Fig.ax_label_fontsize)
     ylbls = ax_heatmap.yaxis.get_ticklabels()
     plt.setp(ylbls, rotation=0)
-    plt.setp(ylbls, fontsize=config.Fig.AXLABEL_FONT_SIZE)
+    plt.setp(ylbls, fontsize=config.Fig.ax_label_fontsize)
 
     # make dendrogram labels invisible
     plt.setp(ax_dend.get_yticklabels() + ax_dend.get_xticklabels(),

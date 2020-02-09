@@ -3,7 +3,7 @@
 class Fig:
     dpi = 163
     fig_size = (7, 7)  # inches
-    AXLABEL_FONT_SIZE = 14  # todo 12
+    ax_label_fontsize = 14  # todo 12
     TICKLABEL_FONT_SIZE = 10
     LEG_FONTSIZE = 10
     LINEWIDTH = 2
