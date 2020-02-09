@@ -99,7 +99,7 @@ def make_dendrogram_heatmap_fig(similarity_matrix: np.ndarray,
 NUM_WORDS = 12
 NOISE = 0.3
 
-# create random words and random embeddings
+# create random words and similarity matrix
 words = [f'word-{n}' for n in range(NUM_WORDS)]
 tmp1 = np.random.random((1, NUM_WORDS)).repeat(NUM_WORDS//2, axis=0) + NOISE * np.random.random((NUM_WORDS//2, NUM_WORDS))
 tmp2 = np.random.random((1, NUM_WORDS)).repeat(NUM_WORDS//2, axis=0) + NOISE * np.random.random((NUM_WORDS//2, NUM_WORDS))

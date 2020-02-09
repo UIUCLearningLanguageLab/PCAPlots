@@ -17,6 +17,12 @@ In matplotlib, by default, y-axis tick labels from the top rather than the origi
 But when using dendrograms, one needs to set the extent of the main axis, which reverses this behavior, such that
 y-axis tick labels start at the origin - this means they need to be reversed to label the rows of the matrix correctly
 
+### Dendrogram-Heatmap + Bar Plot
+
+Shows heatmap clustered by row or column-similarity or both, and a bar plot (e.g. for indicating each word's frequency)
+
+<img src="images/dendrogram_heatmap_with_bar.png" width="400">
+
 
 ### PCA across Time
 
