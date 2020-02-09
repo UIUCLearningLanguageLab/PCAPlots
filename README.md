@@ -18,6 +18,8 @@ yticklabels start from the origin - this means they need to be reversed to label
 
 Shows evolution of pattern of activations on 2 principal components across training time.
 
+![pca_across_time.png](images/pca_across_time.png)
+
 ### Balanced Accuracy by Category
 
 Shows a measure of categorization performance (e.g. balanced accuracy) for each word, in each category.
