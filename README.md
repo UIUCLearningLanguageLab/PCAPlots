@@ -18,7 +18,8 @@ yticklabels start from the origin - this means they need to be reversed to label
 
 Shows evolution of pattern of activations on 2 principal components across training time.
 
-![pca_across_time.png](images/pca_across_time.png)
+<!--![pca_across_time.png](images/pca_across_time.png)-->
+<img src="images/pca_across_time.png" width="50">
 
 ### Balanced Accuracy by Category
 
