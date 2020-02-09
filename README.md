@@ -8,10 +8,14 @@ A collection of useful plotting functions previously used to analyze word embedd
 
 ### Dendrogram-Heatmap
 
-y axis labels for dendrogram heatmap:
-in matplotlib, yticklabels by default start from top rather than origin (which is intuitive and labels rows of a matrix correctly)
-but when using dendrograms, one needs to set the extent of the main axis, which then somehow reverses this behavior, such that
-yticklabels start from the origin - this means they need to be reversed to label the rows of the matrix correctly
+Shows heatmap clustered by row or column-similarity or both.
+
+<img src="images/dendrogram_heatmap.png" width="400">
+
+Note about labeling y-axis ticks:
+In matplotlib, by default, y-axis tick labels from the top rather than the origin of the y-axis.
+But when using dendrograms, one needs to set the extent of the main axis, which reverses this behavior, such that
+y-axis tick labels start at the origin - this means they need to be reversed to label the rows of the matrix correctly
 
 
 ### PCA across Time

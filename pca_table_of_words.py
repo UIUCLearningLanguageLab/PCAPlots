@@ -101,7 +101,7 @@ NUM_WORDS = 12
 EMBED_SIZE = 8
 
 # create random words and random embeddings
-words = [f'word-{random.choice(string.ascii_letters)}' for _ in range(NUM_WORDS)]
+words = [f'word-{n}' for n in range(NUM_WORDS)]
 embeddings = np.random.random((NUM_WORDS, EMBED_SIZE))
 
 fig = make_principal_comps_table_fig(embeddings, words, component=0, num_rows=6)

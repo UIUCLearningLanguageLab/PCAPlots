@@ -99,7 +99,7 @@ NUM_WORDS = 12
 EMBED_SIZE = 8
 
 # create random words and random embeddings
-words = [f'word-{random.choice(string.ascii_letters)}' for _ in range(NUM_WORDS)]
+words = [f'word-{n}' for n in range(NUM_WORDS)]
 g2words = {'group-1': words[:NUM_WORDS//2], 'group-2': words[NUM_WORDS//2:]}
 
 embeddings = np.random.random((NUM_WORDS, EMBED_SIZE))
