@@ -2,7 +2,6 @@ from typing import List
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
-from itertools import product
 from sklearn.metrics.pairwise import cosine_similarity
 
 from src import config

@@ -54,6 +54,13 @@ Shows similarity between embedding spaces belonging to a set of model groups.
 
 <img src="images/embedding_space_comparison.png" width="400">
 
+
+### Cumulative Word Frequency Time course
+
+Shows cumulative frequency for words across ordered partitions of a corpus.
+
+<img src="images/cumulative_frequency.png" width="400">
+
 ## Tips & Tricks
 
 ### Fontsize
