@@ -61,6 +61,12 @@ Shows cumulative frequency for words across ordered partitions of a corpus.
 
 <img src="images/cumulative_frequency.png" width="400">
 
+### Network from Correlation Matrix
+
+Shows network of nodes connected if their correlation is above some threshold.
+
+<img src="images/network_from_correlations.png" width="400">
+
 ## Tips & Tricks
 
 ### Fontsize
