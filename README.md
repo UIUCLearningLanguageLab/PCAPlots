@@ -67,6 +67,13 @@ Shows network of nodes connected if their correlation is above some threshold.
 
 <img src="images/network_from_correlations.png" width="400">
 
+### Best Linear Fit
+
+Shows scatter plot with best linear fit line, R-squared, and p-value.
+
+<img src="images/best_linear_fit.png" width="400">
+
+
 ## Tips & Tricks
 
 ### Fontsize
