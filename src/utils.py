@@ -1,6 +1,5 @@
 import numpy as np
 from scipy.stats import linregress
-import matplotlib.pyplot as plt
 
 from src import config
 
